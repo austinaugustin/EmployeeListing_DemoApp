@@ -45,6 +45,10 @@ const App = (props) => {
         )
     }
 
+    const renderFooter=()=>{
+        return  <View/>
+    }
+
     return (
         <SafeAreaView style={styles.safearea}>
             <StatusBar barStyle={'light-content'} backgroundColor={Colors.primaryColor} />
@@ -66,8 +70,9 @@ const App = (props) => {
                     data?.length > 0 ?
                         <FlatList
                             data={data}
-                            style={styles.flatlist}
                             renderItem={renderChild}
+                            ListFooterComponent={renderFooter}
+                            ListFooterComponentStyle={styles.flatlist}
                             keyExtractor={(_, index) => index.toString()}
                         />
                         :
@@ -114,7 +119,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     flatlist:{
-        paddingTop: 20
+        paddingTop:15
     },
     card: {
         flexDirection: 'row',
@@ -123,7 +128,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         backgroundColor: Colors.whiteColor,
         marginHorizontal: 15,
-        marginBottom: 15,
+        marginTop: 15,
         borderRadius: 6
     },
     titleContainer: {
