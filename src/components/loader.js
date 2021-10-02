@@ -4,7 +4,7 @@ import Colors from '../assets/color';
 
 const Loader = (props) => {
     return (
-        <ActivityIndicator size='small' color={Colors.primaryColor} />
+        <ActivityIndicator style={{padding:20}} size='small' color={Colors.primaryColor} />
     )
 };
 

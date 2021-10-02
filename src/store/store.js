@@ -5,10 +5,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import hardSet from 'redux-persist/lib/stateReconciler/hardSet'
 import logger from 'redux-logger'
 import thunk from 'redux-thunk'
-import simcardList from './reducers/reducers'
+import employeeList from './reducers/reducers'
 
 const appReducer = combineReducers({
-  simcardList
+  employeeList
 })
 
 const rootReducer = (state, action) => {

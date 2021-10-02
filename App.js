@@ -14,5 +14,4 @@ const App = () => {
   );
 };
 
-export { store };
 export default App;

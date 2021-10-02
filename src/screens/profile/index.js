@@ -1,154 +1,154 @@
-import React, {Component} from 'react';
-import {StatusBar, Image, TouchableOpacity, ScrollView} from 'react-native';
-import {
-  Container,
-  View,
-  Header,
-  Form,
-  Item,
-  Label,
-  Input,
-  Button,
-  Text,
-  Body,
-  Title,
-  Left,
-  Picker,
-  Icon,
-  Right,
-  ListItem,
-  Thumbnail,
-  Footer,
-  FooterTab
-} from 'native-base';
+import React from 'react';
+import { SafeAreaView, StatusBar, StyleSheet, Text, Image, View, ScrollView, Platform, Linking } from 'react-native';
+import Colors from '../../assets/color';
+import Images from '../../assets/image';
 
-import {theme} from '../../css/theme';
-import {common} from '../../css/common';
-import LinearGradient from 'react-native-linear-gradient';
+const App = (props) => {
 
-export default class Profile extends Component {
+  const { route } = props
+  const data = route?.params?.item
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      selected: 'key1',
-    };
-  }
-
-  onValueChange(value) {
-    this.setState({
-      selected: value,
+  const onPressLoc = () => {
+    const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
+    const latLng = `${data.address.geo.lat},${data.address.geo.lng}`;
+    const label = 'Custom Label';
+    const url = Platform.select({
+      ios: `${scheme}${label}@${latLng}`,
+      android: `${scheme}${latLng}(${label})`
     });
+    Linking.openURL(url);
   }
 
-  render() {
-    return (
-      <Container>
-        <StatusBar barStyle="light-content" />
-        <Header
-          androidStatusBarColor="#1E8CFB"
-          iosBarStyle="light-content "
-          style={[theme.themeheader]}>
-          {/* <Left>
-            <Icon
-              name="arrow-back"
-              type="MaterialIcons"
-              style={[common.white]}></Icon>
-          </Left> */}
-          <Body>
-            <Title style={[common.pl20]}>Profile</Title>
-          </Body>
-          <Right />
-        </Header>
+  return (
+    <SafeAreaView style={styles.safearea}>
+      <StatusBar barStyle={'light-content'} backgroundColor={Colors.primaryColor} />
+      <ScrollView style={styles.container}>
+        <View style={styles.header}>
+          <Image source={{ uri: data?.profile_image }} style={styles.image} />
+          <View style={styles.textContainer}>
+            <Text style={styles.name}>{data?.name}</Text>
+            <Text style={styles.username}>{data?.username}</Text>
+            {data?.company ?
+              <View style={styles.company}>
+                <Image source={Images.briefcase} style={styles.icon} />
+                <View style={styles.textContent}>
+                  <Text style={styles.companyName}>{data?.company?.name}</Text>
+                  <Text style={styles.phrase}>{data?.company?.catchPhrase}</Text>
+                </View>
+              </View>
+              : null}
+          </View>
+        </View>
+        <View style={styles.content}>
+          <View style={styles.row}>
+            <Text style={styles.text}>Email</Text>
+            <Text style={styles.title}>{data?.email}</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.text}>Phone</Text>
+            <Text style={styles.title}>{data?.phone ?? 'Not Available'}</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.text}>Website</Text>
+            <Text style={styles.title}>{data?.website ?? 'Not Available'}</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.text}>Address</Text>
+            <Text style={styles.title}>{data?.address?.suite},{data?.address?.street}{'\n'}{data?.address?.city}{'\n'}{data?.address?.zipcode}</Text>
+          </View>
+          <View style={styles.row}>
+            <Text onPress={onPressLoc} style={styles.text}>Location</Text>
+            <Text style={styles.click}>Click here</Text>
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
 
-        <LinearGradient
-          colors={['#1E8CFB', '#0FBCDB', '#03E9BF']}
-          style={{
-            padding: 15,
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-          }}>
-          <ScrollView>
-            <View style={[theme.profilewp]}>
-              <View style={theme.profilethumb}>
-                <Image
-                  source={require('../../assets/images/user_thumb.png')}
-                  style={{width: '100%'}}></Image>
-              </View>
-            </View>
-            <View style={[common.p10]}>
-              <Text
-                style={[
-                  common.white,
-                  common.fontsemibold,
-                  common.textXlarg,
-                  common.textcenter,
-                ]}>
-                Francine Hawkins
-              </Text>
-              <Text
-                style={[
-                  common.textcenter,
-                  common.white,
-                  common.fontmedium,
-                  common.font18,
-                  common.mb15,
-                ]}>
-                francinehawkin@gmail.com
-              </Text>
-              <Button
-                rounded
-                style={[theme.themebtn, common.center, {width: 200}]}>
-                <Text
-                  style={[
-                    common.textcenter,
-                    common.center,
-                    common.textlarg,
-                    common.fontsemibold,
-                  ]}>
-                  EDIT
-                </Text>
-              </Button>
-            </View>
-            <View
-              style={[common.bgwhite, theme.cardlogin, common.mt10, common.p0]}>
-              <View style={[common.flexstyle, common.justfycenter, common.p20]}>
-                <View style={[common.p10]}>
-                  <Icon
-                    name="lock-outline"
-                    type="MaterialCommunityIcons"
-                    style={[common.textgray]}></Icon>
-                </View>
-                <View>
-                  <Text style={[common.fontmedium, common.textlarg]}>
-                    Change Password
-                  </Text>
-                </View>
-              </View>
-              <View
-                style={[
-                  common.flexstyle,
-                  common.justfycenter,
-                  common.p20,
-                  theme.bordertop,
-                ]}>
-                <View style={[common.p10]}>
-                  <Icon
-                    name="logout-variant"
-                    type="MaterialCommunityIcons"
-                    style={[common.textgray]}></Icon>
-                </View>
-                <View>
-                  <Text style={[common.fontmedium, common.textlarg]}>
-                    Logout
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </ScrollView>
-        </LinearGradient>
-      </Container>
-    );
+const styles = StyleSheet.create({
+  safearea: {
+    flex: 1,
+    backgroundColor: Colors.backgroundColor
+  },
+  container: {
+    padding: 15,
+    backgroundColor: Colors.whiteColor
+  },
+  icon: {
+    height: 16,
+    width: 16
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  image: {
+    height: 100,
+    width: 100,
+    borderRadius: 100 / 2,
+    backgroundColor:Colors.lightColor
+  },
+  textContainer: {
+    paddingLeft: 15
+  },
+  name: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: Colors.blackColor,
+    lineHeight: 20
+  },
+  username: {
+    fontSize: 15,
+    fontStyle: 'italic',
+    color: Colors.blackColor,
+    lineHeight: 20,
+    paddingTop: 5
+  },
+  company: {
+    flexDirection: 'row',
+    paddingTop: 10
+  },
+  textContent: {
+    paddingLeft: 8
+  },
+  companyName: {
+    fontSize: 14,
+    color: Colors.blackColor,
+    fontWeight: 'bold'
+  },
+  phrase: {
+    fontSize: 14,
+    color: Colors.blackColor
+  },
+  content: {
+    paddingHorizontal: 20,
+    paddingTop: 30
+  },
+  row: {
+    flexDirection: 'row',
+    paddingBottom: 10
+  },
+  text: {
+    flex: 1,
+    fontSize: 13,
+    color: Colors.secondaryColor,
+    lineHeight: 22,
+
+  },
+  title: {
+    flex: 4,
+    fontSize: 13,
+    color: Colors.blackColor,
+    lineHeight: 22,
+  },
+  click: {
+    flex: 4,
+    fontSize: 13,
+    fontStyle: 'italic',
+    color: 'blue',
+    lineHeight: 22,
   }
-}
+});
+
+export default App;
